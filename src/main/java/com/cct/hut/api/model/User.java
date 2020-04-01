@@ -1,5 +1,6 @@
 package com.cct.hut.api.model;
 
+import com.cct.hut.api.enums.Roles;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,6 +24,9 @@ public class User implements Serializable{
 
     private int points;
 
+    @Enumerated
+    private Roles role;
+
     @OneToMany(mappedBy = "user")
     private Set<Post> posts;
 
@@ -41,12 +45,13 @@ public class User implements Serializable{
     @OneToMany(mappedBy = "user")
     private Set<AnswerReport> answerReports;
 
-    public User(Long id, String email,String password, String name, int points) {
+    public User(Long id, String email,String password, String name, int points, Roles role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.points = points;
+        this.role = role;
     }
 
     public User() {

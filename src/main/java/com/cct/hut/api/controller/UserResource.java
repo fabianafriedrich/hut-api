@@ -3,6 +3,7 @@ package com.cct.hut.api.controller;
 import com.cct.hut.api.model.User;
 import com.cct.hut.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class UserResource {
     @PostMapping
     public ResponseEntity<User> add(@RequestBody @Valid User user){
         userService.save(user);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
     /*HTTP get methods to list by id the results*/
@@ -41,7 +42,13 @@ public class UserResource {
     @PutMapping
     public ResponseEntity update(@RequestBody @Valid User user) {
         userService.update(user);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping (value = "/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        userService.delete(userService.findById(id));
+        return new ResponseEntity<User>(HttpStatus.OK);
     }
 
 

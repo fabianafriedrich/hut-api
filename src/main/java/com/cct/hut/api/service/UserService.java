@@ -21,6 +21,7 @@ public class UserService {
     public User save(User user){
         return userRepository.save(user);
     }
+
     /*Method to list all user on database*/
     public List<User> listAll(){
         return userRepository.findAll();
@@ -35,6 +36,10 @@ public class UserService {
        userRepository.save(user);
     }
 
+    /*Method to delete user on database*/
+    public void delete(User user){
+        userRepository.delete(user);
+    }
 
 
 }

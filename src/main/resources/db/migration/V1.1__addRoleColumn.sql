@@ -1,0 +1,2 @@
+ALTER TABLE user ADD COLUMN role int(1) NOT NULL;
+
