@@ -1,6 +1,7 @@
 package com.cct.hut.api.model;
 
 import com.cct.hut.api.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 
@@ -35,15 +36,19 @@ public class Post implements Serializable{
     @JoinColumn(name = "fk_user")
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private Set<Answer> answers;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private Set<PostImage> postImages;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private Set<PostVote> postVotes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post")
     private Set<PostReport> postReports;
 
