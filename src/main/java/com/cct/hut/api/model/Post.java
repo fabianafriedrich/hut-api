@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -28,6 +29,7 @@ public class Post implements Serializable{
     private Integer likes;
 
     private Integer dislikes;
+
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
@@ -57,5 +59,37 @@ public class Post implements Serializable{
     }
 
     public Post() {
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return id.equals(post.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", creationDate=" + creationDate +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", likes=" + likes +
+                ", dislikes=" + dislikes +
+                ", user=" + user +
+                ", answers=" + answers +
+                ", postImages=" + postImages +
+                ", postVotes=" + postVotes +
+                ", postReports=" + postReports +
+                '}';
     }
 }

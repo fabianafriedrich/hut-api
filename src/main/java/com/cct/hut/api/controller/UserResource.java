@@ -32,19 +32,21 @@ public class UserResource {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
-    /*HTTP get methods to list by id the results*/
+    /*HTTP get method to list by id the results*/
     @GetMapping(value = "/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id){
         User user = userService.findById(id);
         return ResponseEntity.ok(user);
     }
 
+    /*HTTP put method to update user*/
     @PutMapping
     public ResponseEntity update(@RequestBody @Valid User user) {
         userService.update(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
+    /*HTTP Delete method to remove user by id*/
     @DeleteMapping (value = "/{id}")
     public ResponseEntity delete(@PathVariable Long id){
         userService.delete(userService.findById(id));
