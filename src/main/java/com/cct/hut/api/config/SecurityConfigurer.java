@@ -1,5 +1,7 @@
 package com.cct.hut.api.config;
 
+import com.cct.hut.api.jwt.JWTAuthorizationFilter;
+import com.cct.hut.api.jwt.JwtTokenProvider;
 import com.cct.hut.api.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +22,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Qualifier("userDetailsServiceImpl")
     @Autowired
@@ -47,11 +52,15 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout", "POST"))
                 .and()
                 //login form and path
-                .formLogin().loginPage("/user/login").and()
+                .formLogin().loginPage("/users/login").and()
                 //enable basic authentication
                 .httpBasic().and()
                 //disable Cross side request
                 .csrf().disable();
+
+        //jwt filter to validate the token
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(),jwtTokenProvider));
+
     }
 
     @Override

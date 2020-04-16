@@ -1,19 +1,26 @@
 package com.cct.hut.api.controller;
 
+import com.cct.hut.api.enums.Roles;
+import com.cct.hut.api.jwt.JwtTokenProvider;
 import com.cct.hut.api.model.User;
 import com.cct.hut.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 /*Controller/Resources Layer to handle all the request that come from the UI*/
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
+
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
     /*Spring Dependence Injection */
     @Autowired
@@ -52,7 +59,29 @@ public class UserResource {
         userService.delete(userService.findById(id));
         return new ResponseEntity<User>(HttpStatus.OK);
     }
+    @PostMapping("/registration")
+    public ResponseEntity<?> register(@RequestBody User user){
+        if(userService.findByEmail(user.getEmail()) != null){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        user.setRole(Roles.STUDENT);
+        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+    }
 
+    @GetMapping("/login")
+    public ResponseEntity<?> getUser(Principal principal){
+
+        if(principal == null){
+            //logout will also use here so we should return ok http status.
+            return ResponseEntity.ok(principal);
+        }
+        UsernamePasswordAuthenticationToken authenticationToken =
+                (UsernamePasswordAuthenticationToken) principal;
+        User user = userService.findByEmail(authenticationToken.getName());
+        user.setToken(tokenProvider.generateToken(authenticationToken));
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 
 
 }

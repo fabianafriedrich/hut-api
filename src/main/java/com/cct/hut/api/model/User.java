@@ -52,6 +52,10 @@ public class User implements Serializable{
     @OneToMany(mappedBy = "user")
     private Set<AnswerReport> answerReports;
 
+    @Transient
+    private String token;
+
+
     public User(Long id, String email,String password, String name, int points, Roles role) {
         this.id = id;
         this.email = email;
