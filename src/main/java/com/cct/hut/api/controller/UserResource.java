@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,12 +34,12 @@ public class UserResource {
         return userService.listAll();
     }
 
-    /*HTTP post methods to persist user*/
-    @PostMapping
-    public ResponseEntity<User> add(@RequestBody @Valid User user){
-        userService.save(user);
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
-    }
+//    /*HTTP post methods to persist user*/
+//    @PostMapping
+//    public ResponseEntity<User> add(@RequestBody @Valid User user){
+//        userService.save(user);
+//        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+//    }
 
     /*HTTP get method to list by id the results*/
     @GetMapping(value = "/{id}")
@@ -65,23 +67,23 @@ public class UserResource {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         user.setRole(Roles.STUDENT);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
     @GetMapping("/login")
     public ResponseEntity<?> getUser(Principal principal){
-
         if(principal == null){
             //logout will also use here so we should return ok http status.
             return ResponseEntity.ok(principal);
         }
         UsernamePasswordAuthenticationToken authenticationToken =
                 (UsernamePasswordAuthenticationToken) principal;
+
         User user = userService.findByEmail(authenticationToken.getName());
         user.setToken(tokenProvider.generateToken(authenticationToken));
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
 
 }

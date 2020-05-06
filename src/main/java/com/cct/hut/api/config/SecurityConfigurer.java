@@ -2,7 +2,6 @@ package com.cct.hut.api.config;
 
 import com.cct.hut.api.jwt.JWTAuthorizationFilter;
 import com.cct.hut.api.jwt.JwtTokenProvider;
-import com.cct.hut.api.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -41,9 +39,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .authorizeRequests()
                 //These are public paths
-                .antMatchers("/resources/**",  "/error", "/users/**").permitAll()
-                //These can be reachable for just have admin role.
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/**").permitAll()
                 //All remaining paths should need authentication.
                 .anyRequest().fullyAuthenticated()
                 .and()
@@ -68,9 +64,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    //Cross origin resource sharing
+    //Cross origin resource sharing.
     @Bean
-    public WebMvcConfigurer corsCongifurer(){
+    public WebMvcConfigurer corsConfigurer(){
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
