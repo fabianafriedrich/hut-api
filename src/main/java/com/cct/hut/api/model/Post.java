@@ -1,6 +1,7 @@
 package com.cct.hut.api.model;
 
 import com.cct.hut.api.enums.Status;
+import com.cct.hut.api.enums.Subjects;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -31,6 +32,9 @@ public class Post implements Serializable{
 
     private Integer dislikes;
 
+    @Enumerated(EnumType.STRING)
+    private Subjects subjects;
+
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
@@ -53,7 +57,7 @@ public class Post implements Serializable{
     private Set<PostReport> postReports;
 
 
-    public Post(Long id, LocalDateTime creationDate, String title, String description, Status status, Integer likes, Integer dislikes) {
+    public Post(Long id, LocalDateTime creationDate, String title, String description, Status status, Integer likes, Integer dislikes, Subjects subjects) {
         this.id = id;
         this.creationDate = creationDate;
         this.title = title;
@@ -61,6 +65,7 @@ public class Post implements Serializable{
         this.status = status;
         this.likes = likes;
         this.dislikes = dislikes;
+        this.subjects = subjects;
     }
 
     public Post() {
@@ -90,6 +95,7 @@ public class Post implements Serializable{
                 ", status=" + status +
                 ", likes=" + likes +
                 ", dislikes=" + dislikes +
+                ", subjects=" + subjects +
                 ", user=" + user +
                 ", answers=" + answers +
                 ", postImages=" + postImages +
