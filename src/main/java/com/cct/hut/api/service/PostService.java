@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PostService {
@@ -21,7 +21,10 @@ public class PostService {
 
     /*Method to list all post on database*/
     public List<Post> listAll(){
-        return postRepository.findAll();
+        List<Post> returnList = new ArrayList<>();
+        returnList = postRepository.findAll();
+        Collections.sort(returnList, Collections.reverseOrder(Comparator.comparing(obj -> obj.getCreationDate())));
+        return returnList;
     }
 
     /*Method to find post by id on database*/

@@ -38,8 +38,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         //Cross-origin-resource-sharing: localhost:8080, localhost:4200(allow for it.)
         http.cors().and()
                 .authorizeRequests()
-                //These are public paths
-                .antMatchers("/**").permitAll()
+                //These are public paths but require authentication
+//                .antMatchers("/**").permitAll()
+                .antMatchers("/**").authenticated()
                 //All remaining paths should need authentication.
                 .anyRequest().fullyAuthenticated()
                 .and()
