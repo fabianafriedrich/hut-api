@@ -49,8 +49,11 @@ public class UserResource {
     }
 
     /*HTTP put method to update user*/
-    @PutMapping
-    public ResponseEntity update(@RequestBody @Valid User user) {
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody @Valid User user) {
+        if(!user.getPassword().startsWith("$2a") ){
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        }
         userService.update(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }

@@ -17,6 +17,8 @@ public class User implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long studentId;
+
     private String email;
 
     private String password;
@@ -56,8 +58,9 @@ public class User implements Serializable{
     private String token;
 
 
-    public User(Long id, String email,String password, String name, int points, Roles role) {
+    public User(Long id, Long studentId, String email,String password, String name, int points, Roles role) {
         this.id = id;
+        this.studentId = studentId;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -85,6 +88,7 @@ public class User implements Serializable{
     public String toString() {
         return "User{" +
                 "id=" + id +
+                "studentId=" + studentId +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
