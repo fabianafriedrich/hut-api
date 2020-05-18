@@ -27,6 +27,9 @@ public class User implements Serializable{
 
     private int points;
 
+    @Transient
+    private String mailMessage;
+
     @Enumerated
     private Roles role;
 

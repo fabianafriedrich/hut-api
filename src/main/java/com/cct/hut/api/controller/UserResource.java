@@ -3,10 +3,12 @@ package com.cct.hut.api.controller;
 import com.cct.hut.api.enums.Roles;
 import com.cct.hut.api.jwt.JwtTokenProvider;
 import com.cct.hut.api.model.User;
+import com.cct.hut.api.service.EmailService;
 import com.cct.hut.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,18 +30,15 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EmailService emailService;
+
     /*HTTP get methods to list all the results*/
     @GetMapping
     public List<User> getAll(){
         return userService.listAll();
     }
 
-//    /*HTTP post methods to persist user*/
-//    @PostMapping
-//    public ResponseEntity<User> add(@RequestBody @Valid User user){
-//        userService.save(user);
-//        return new ResponseEntity<User>(user, HttpStatus.CREATED);
-//    }
 
     /*HTTP get method to list by id the results*/
     @GetMapping(value = "/{id}")
@@ -87,6 +86,19 @@ public class UserResource {
         user.setToken(tokenProvider.generateToken(authenticationToken));
 
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    /*Endpoint to send email*/
+    @PostMapping("/contactus")
+    public ResponseEntity<User> sendEmail(@RequestBody @Valid User user){
+        try {
+            emailService.sendEmail(user);
+            return new ResponseEntity<>(user,  HttpStatus.OK);
+        } catch( MailException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }
