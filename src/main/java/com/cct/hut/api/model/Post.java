@@ -26,6 +26,7 @@ public class Post implements Serializable{
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     private Integer likes;
