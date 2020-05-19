@@ -65,6 +65,7 @@ public class UserResource {
     }
     @PostMapping("/registration")
     public ResponseEntity<?> register(@RequestBody User user){
+        System.out.println("####### BATEU AQUI EM #######");
         if(userService.findByEmail(user.getEmail()) != null){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
