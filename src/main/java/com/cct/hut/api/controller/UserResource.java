@@ -71,7 +71,12 @@ public class UserResource {
         }
         user.setRole(Roles.STUDENT);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/login")
