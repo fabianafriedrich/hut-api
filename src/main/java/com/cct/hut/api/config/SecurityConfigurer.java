@@ -39,8 +39,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .authorizeRequests()
                 //These are public paths but require authentication
-//                .antMatchers("/**").permitAll()
-                .antMatchers("/**").authenticated()
+                .antMatchers("/**").permitAll()
+//                .antMatchers("/**").authenticated()
                 //All remaining paths should need authentication.
                 .anyRequest().fullyAuthenticated()
                 .and()
