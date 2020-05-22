@@ -65,9 +65,13 @@ public class UserResource {
     }
     @PostMapping("/registration")
     public ResponseEntity<?> register(@RequestBody User user){
-        if(userService.findByEmail(user.getEmail()) != null){
+        User userFroDB = userService.findByEmail(user.getEmail());
+        if(userFroDB != null){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
+//        if(userService.findByEmail(user.getEmail()) != null){
+//            return new ResponseEntity<>(HttpStatus.CONFLICT);
+//        }
         user.setRole(Roles.STUDENT);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         try {
