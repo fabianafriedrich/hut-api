@@ -3,6 +3,7 @@ package com.cct.hut.api.resource.tests;
 import com.cct.hut.api.model.User;
 import com.cct.hut.api.service.UserService;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,8 +15,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

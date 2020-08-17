@@ -1,0 +1,34 @@
+version: "3"
+services:
+  hut-api:
+    image: hut-api
+    ports:
+      - "8080:8080"
+    networks:
+      - hut-network
+    depends_on:
+      - hutdb
+
+  flyway:
+    image: flyway/flyway
+    networks:
+      - hut-network
+    environment:
+      - LOCATIONS=filesystem:/flyway/sql/src/main/resources/db/migration
+    command:
+      -url=jdbc:mysql://hutdb -schemas=hut_database -user=root -password=root -connectRetries=60 migrate
+    depends_on:
+      - hutdb
+
+  hutdb:
+    image: mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - hut-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=hut_database
+
+networks:
+  hut-network:
